@@ -6,4 +6,5 @@ import study.assignment1.domain.PhoneInfo;
 
 @Repository
 public interface PhoneNumberRepository extends JpaRepository<PhoneInfo, Integer> {
+    boolean existsById(Integer id);
 }

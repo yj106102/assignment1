@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import study.assignment1.Utils.PasswordConverter;
+import study.assignment1.utils.PasswordConverter;
 
 @Entity
 @Table(name = "TB_USER")
@@ -24,6 +24,13 @@ public class User {
     private String password;
     @Column(length=50, nullable = false)
     private String nickname;
+    public User(String userName, String password, String nickname) {
+        this.userName = userName;
+        this.password = password;
+        this.nickname = nickname;
+    }
+    public User() {
+    }
 
     public Integer getId() {
         return Id;
@@ -41,11 +48,7 @@ public class User {
         return password;
     }
 
-    public void setUser(String userName, String password, String nickname) {
-        this.userName = userName;
-        this.password = password;
-        this.nickname = nickname;
-    }
+
 
 
 }

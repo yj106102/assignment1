@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import study.assignment1.domain.PhoneInfo;
+import study.assignment1.dto.PhoneNumberForm;
 import study.assignment1.repository.PhoneNumberRepository;
+import study.assignment1.utils.ApiResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,34 +21,44 @@ public class PhoneNumberService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
-    public Integer join(PhoneInfo phoneInfo) {
-        return phoneNumberRepository.save(phoneInfo).getId();
-
+    public PhoneInfo join(PhoneNumberForm phoneNumberForm) {
+        return phoneNumberRepository.save(new PhoneInfo(phoneNumberForm.getName(), phoneNumberForm.getNumber()));
     }
     public PhoneInfo getById(Integer id) {
-        return validateExistenceAndGet(id);
+        validateExistence(id);
+        return phoneNumberRepository.findById(id).orElseThrow();
     }
     public List<PhoneInfo> getAll() {
         return phoneNumberRepository.findAll();
     }
-    public PhoneInfo update(Integer id, PhoneInfo phoneInfo) {
-        PhoneInfo savedPhoneInfo = validateExistenceAndGet(id);
-        savedPhoneInfo.setName(phoneInfo.getName());
-            savedPhoneInfo.setNumber(phoneInfo.getNumber());
-        return savedPhoneInfo;
+    public void update(Integer id, PhoneNumberForm phoneNumberForm) {
+        PhoneInfo savedPhoneInfo = findPhoneInfoById(id);
+        savedPhoneInfo.setPhoneInfo(phoneNumberForm.getName(), phoneNumberForm.getNumber());
     }
 
-    private PhoneInfo validateExistenceAndGet(Integer id) {
+    public void delete(Integer id) {
+        PhoneInfo savedPhoneInfo = findPhoneInfoById(id);
+        phoneNumberRepository.deleteById(id);
+    }
+    ///////////////////////
+    // Private Functions //
+    ///////////////////////
+    private PhoneInfo getPhoneInfoFromForm(PhoneNumberForm phoneNumberForm) {
+        return new PhoneInfo(phoneNumberForm.getName(), phoneNumberForm.getNumber());
+    }
+
+    private void validateExistence(Integer id) {
+        if (!phoneNumberRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 정보입니다.");
+        }
+    }
+
+    private PhoneInfo findPhoneInfoById(Integer id){
         Optional<PhoneInfo> savedPhoneInfo = phoneNumberRepository.findById(id);
-        if (savedPhoneInfo.isEmpty()) {
+        if(savedPhoneInfo.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 정보입니다.");
         }
         return savedPhoneInfo.get();
     }
 
-    public PhoneInfo delete(Integer id) {
-        PhoneInfo savedPhoneInfo = validateExistenceAndGet(id);
-        phoneNumberRepository.deleteById(id);
-        return savedPhoneInfo;
-    }
 }

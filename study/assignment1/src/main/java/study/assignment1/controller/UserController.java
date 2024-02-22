@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import study.assignment1.domain.User;
+import study.assignment1.dto.UserForm;
 import study.assignment1.service.UserService;
+import study.assignment1.utils.ApiResponseEntity;
 
 import java.util.HashMap;
 
@@ -19,16 +21,16 @@ public class UserController {
     }
 
     @PostMapping("join")
-    public void join(@RequestBody UserForm userForm) {
-        userService.join(userForm);
+    public ApiResponseEntity join(@RequestBody UserForm userForm) {
+        return new ApiResponseEntity("전화번호를 저장했습니다.", userService.join(userForm));
     }
     @GetMapping("login")
-    public Object login(@RequestParam String userName, @RequestParam String password) {
+    public ApiResponseEntity login(@RequestParam String userName, @RequestParam String password) {
         User loginUser = userService.login(userName, password);
-        HashMap<String, String> response = new HashMap<>();
+        HashMap<String, Object> response = new HashMap<>();
         response.put("userName", loginUser.getUserName());
         response.put("nickName", loginUser.getNickname());
-        response.put("id", String.valueOf(loginUser.getId()));
-        return response;
+        response.put("id", loginUser.getId());
+        return new ApiResponseEntity("로그인했습니다.",response);
     }
 }

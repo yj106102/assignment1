@@ -1,4 +1,4 @@
-package study.assignment1.controller;
+package study.assignment1.dto;
 
 public class UserForm {
     private String userName;

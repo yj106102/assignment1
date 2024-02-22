@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import study.assignment1.controller.UserForm;
+import study.assignment1.dto.UserForm;
 import study.assignment1.domain.User;
 import study.assignment1.repository.UserRepository;
 
@@ -22,11 +22,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void join(UserForm userForm) {
+    public Integer join(UserForm userForm) {
         if (userRepository.findByUserName(userForm.getUserName()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 이름의 유저가 이미 존재합니다.");
         }
-        userRepository.save(getUserByUserForm(userForm));
+        return userRepository.save(new User(userForm.getUserName(), userForm.getPassword(), userForm.getNickname())).getId();
     }
     public User login(String userName, String password) {
         Optional<User> user = userRepository.findByUserName(userName);
@@ -39,9 +39,4 @@ public class UserService {
         return user.get();
     }
 
-    private User getUserByUserForm(UserForm userForm) {
-        User user = new User();
-        user.setUser(userForm.getUserName(),userForm.getPassword(), userForm.getNickname());
-        return user;
-    }
 }
