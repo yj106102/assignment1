@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import study.assignment1.domain.User;
-import study.assignment1.dto.UserForm;
+import study.assignment1.dto.User.UserForm;
 import study.assignment1.service.UserService;
 import study.assignment1.utils.ApiResponseEntity;
 
@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping("join")
     public ApiResponseEntity join(@RequestBody UserForm userForm) {
-        return new ApiResponseEntity("전화번호를 저장했습니다.", userService.join(userForm));
+        return new ApiResponseEntity("회원가입했습니다.", userService.join(userForm));
     }
     @GetMapping("login")
     public ApiResponseEntity login(@RequestParam String userName, @RequestParam String password) {

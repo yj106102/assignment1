@@ -7,9 +7,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import study.assignment1.utils.PasswordConverter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "TB_USER")
 public class User {
     @Id
@@ -29,26 +35,4 @@ public class User {
         this.password = password;
         this.nickname = nickname;
     }
-    public User() {
-    }
-
-    public Integer getId() {
-        return Id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-
-
 }

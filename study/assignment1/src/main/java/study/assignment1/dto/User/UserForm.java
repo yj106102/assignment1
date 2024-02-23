@@ -1,4 +1,4 @@
-package study.assignment1.dto;
+package study.assignment1.dto.User;
 
 public class UserForm {
     private String userName;

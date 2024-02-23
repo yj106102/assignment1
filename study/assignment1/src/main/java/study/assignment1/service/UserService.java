@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import study.assignment1.dto.UserForm;
+import study.assignment1.dto.User.UserForm;
 import study.assignment1.domain.User;
 import study.assignment1.repository.UserRepository;
 
@@ -35,6 +35,14 @@ public class UserService {
         }
         if (!passwordEncoder.matches(password, user.get().getPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 비밀번호입니다.");
+        }
+        return user.get();
+    }
+
+    public User getById(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "찾을 수 없는 유저입니다.");
         }
         return user.get();
     }
